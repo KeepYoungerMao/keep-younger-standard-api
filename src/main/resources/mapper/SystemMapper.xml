@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mao.mapper.SystemMapper">
+
+    <!-- search sys_account -->
+    <select id="getUserDetail" parameterType="java.lang.Long"
+            resultType="com.mao.entity.security.UserDetails">
+        SELECT a.app_name,a.app_key,a.app_secret,a.locked,a.expired,a.enabled,a.app_role,
+        r.name AS app_role_name
+        FROM sys_account AS a
+        LEFT JOIN sys_account_role AS r ON a.app_role = r.id
+        WHERE a.app_key = #{key}
+    </select>
+
+    <!-- search sys_account_permission list -->
+    <select id="getPermissions" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT p.permission
+        FROM sys_account_role_permission_ref AS r
+        LEFT JOIN sys_account_permission AS p ON r.per_id = p.id
+        WHERE r.role_id = #{role}
+    </select>
+
+</mapper>
